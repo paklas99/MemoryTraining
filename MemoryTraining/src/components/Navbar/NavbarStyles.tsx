@@ -1,8 +1,14 @@
 import { style, styled } from '@mui/system';
 import { AppBar, Toolbar, Button, Popover } from '@mui/material';
 
-export const StyledToolbar = styled(Toolbar)(
-);
+
+export const StyledToolbar = styled(Toolbar)(`
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+`);
+
+
 
 export const StyledPopover = styled(Popover)(
 
@@ -10,6 +16,7 @@ export const StyledPopover = styled(Popover)(
 
 export const LogoutBtn = styled(Button)(
 );
+
 
 export const StyledButton = styled(Button)(`
     background-color: #f5f5f5;
