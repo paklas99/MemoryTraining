@@ -3,7 +3,7 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { HomePage } from '../pages/HomePage/Home';
 import { LoginPage } from '../pages/LoginPage/LoginPage';
 import { Dashboard } from '../pages/Dashboard/dashboard';
-import MemorizeNumbersPage from '../pages/Numbers/MemorizeNumbersPage';
+import NumbersController from '../pages/Numbers/NumbersController';
 
 
 interface AppRoutesProps {
@@ -25,7 +25,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({ isAuthenticated }) => {
       <Route path="/" element={<HomePage message="Hello world" />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/numbers" element={<MemorizeNumbersPage/>} />
+      <Route path="/numbers" element={<NumbersController/>} />
 
     </Routes>
   );
