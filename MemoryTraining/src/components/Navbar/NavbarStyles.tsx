@@ -1,4 +1,4 @@
-import { style, styled } from '@mui/system';
+import { styled } from '@mui/system';
 import { AppBar, Toolbar, Button, Popover } from '@mui/material';
 
 
@@ -10,12 +10,13 @@ export const StyledToolbar = styled(Toolbar)(`
 
 
 
-export const StyledPopover = styled(Popover)(
+export const StyledPopover = styled(Popover)(`
 
-);
+`);
 
-export const LogoutBtn = styled(Button)(
-);
+export const LogoutBtn = styled(Button)(`
+
+`);
 
 
 export const StyledButton = styled(Button)(`
@@ -33,5 +34,6 @@ export const StyledButton = styled(Button)(`
   }
   `);
 
-export const StyledAppBar = styled(AppBar)(
-);
+export const StyledAppBar = styled(AppBar)(`
+
+`);
