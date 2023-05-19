@@ -1,6 +1,7 @@
 class MemorizeNumbersModel {
     private numbersToMemorize: number[] = [];
     private score: number = 0;
+    private groupBy: number = 1
   
     public startGame(numberCount: number): void {
       this.numbersToMemorize = Array.from({ length: numberCount }, () =>
@@ -27,6 +28,14 @@ class MemorizeNumbersModel {
   
     public getNumbersToMemorize(): number[] {
       return this.numbersToMemorize;
+    }
+
+    public getGroupBy(): number {
+        return this.groupBy;
+    }
+
+    public setGroupBy(groupBy: number): number {
+        return this.groupBy = groupBy;
     }
   
     public getScore(): number {
