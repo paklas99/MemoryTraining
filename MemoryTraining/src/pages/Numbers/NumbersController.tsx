@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MemorizeNumbersModel from './NumbersModel';
+import NumberViewSetup from './NumberViewSetup';
 import MemorizeNumbersView from './NumbersView';
 
 const theme = createTheme();
 
-const MemorizeNumbersPage: React.FC = () => {
-  const [numberCount, setNumberCount] = useState<number>(5); // Number of numbers to memorize
-  const [gameStarted, setGameStarted] = useState<boolean>(false); // Track if the game has started
-  const [userInput, setUserInput] = useState<string>(''); // User input for repeating the numbers
-  const [score, setScore] = useState<number>(0); // Score based on correct answers
-  const [numbersToMemorize, setNumbersToMemorize] = useState<number[]>([]); // Numbers to memorize
-  const [timerDuration, setTimerDuration] = useState<number>(5); // Timer duration in seconds
-
+const MemorizeNumbersController: React.FC = () => {
+  const [gameStarted, setGameStarted] = useState(false);
+  const [numberCount, setNumberCount] = useState(5);
+  const [timerDuration, setTimerDuration] = useState(5);
+  const [userInput, setUserInput] = useState('');
+  const [score, setScore] = useState(0);
+  const [numbersToMemorize, setNumbersToMemorize] = useState<number[]>([]);
+  
   const model = new MemorizeNumbersModel();
 
   const handleNumberCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +27,7 @@ const MemorizeNumbersPage: React.FC = () => {
   };
 
   const handleStartGame = () => {
-    model.startGame(numberCount);
+    model.startGame(numberCount, 2);
     setGameStarted(true);
     setUserInput('');
     setScore(0);
@@ -44,7 +45,8 @@ const MemorizeNumbersPage: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <MemorizeNumbersView
+      {gameStarted ? (
+        <MemorizeNumbersView
         numberCount={numberCount}
         timerDuration={timerDuration}
         userInput={userInput}
@@ -53,12 +55,15 @@ const MemorizeNumbersPage: React.FC = () => {
         numbersToMemorize={numbersToMemorize}
         onNumberCountChange={handleNumberCountChange}
         onTimerDurationChange={handleTimerDurationChange}
-        onStartGame={handleStartGame}
         onUserInputChange={handleUserInputChange}
         onCheckAnswer={handleCheckAnswer}
-      />
+        onStartGame={handleStartGame}
+        />
+      ) : (
+        <NumberViewSetup onStartGame={handleStartGame} />
+      )}
     </ThemeProvider>
   );
 };
 
-export default MemorizeNumbersPage;
+export default MemorizeNumbersController;
