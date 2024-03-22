@@ -1,15 +1,12 @@
 import React from 'react';
-import { Button, TextField, Typography, Box } from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 
 interface MemorizeNumbersViewProps {
   numberCount: number;
-  timerDuration: number;
+  numbersToMemorize: number[];
   userInput: string;
   score: number;
-  gameStarted: boolean;
-  numbersToMemorize: number[];
   onNumberCountChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onTimerDurationChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onUserInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onCheckAnswer: () => void;
   onStartGame: () => void;
@@ -17,27 +14,40 @@ interface MemorizeNumbersViewProps {
 
 const MemorizeNumbersView: React.FC<MemorizeNumbersViewProps> = ({
   numberCount,
-  timerDuration,
+  numbersToMemorize,
   userInput,
   score,
-  gameStarted,
-  numbersToMemorize,
   onNumberCountChange,
-  onTimerDurationChange,
   onUserInputChange,
   onCheckAnswer,
   onStartGame,
 }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: 4 }}>
-      <Typography variant="h4">Gameplay</Typography>
-
-      <Typography variant="h6">Memorize the Numbers:</Typography>
-      <Typography variant="h5" sx={{ fontWeight: 'bold', my: 2 }}>
-        {numbersToMemorize.slice(0, numberCount).join(' ')}
-      </Typography>
-
-      <Typography variant="h6">Enter the Numbers:</Typography>
+      <Typography variant="h4">Memory Game</Typography>
+      
+      <TextField
+        label="Number of Digits"
+        type="number"
+        value={numberCount}
+        onChange={onNumberCountChange}
+        variant="outlined"
+        sx={{ mt: 2, mb: 2 }}
+      />
+      
+      <Button variant="contained" onClick={onStartGame} sx={{ mb: 2 }}>
+        Start Game
+      </Button>
+      
+      {numbersToMemorize.length > 0 && (
+        <>
+          <Typography variant="h6">Memorize these numbers:</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', my: 2 }}>
+            {numbersToMemorize.join(' ')}
+          </Typography>
+        </>
+      )}
+      
       <TextField
         label="Your Answer"
         value={userInput}
@@ -45,11 +55,11 @@ const MemorizeNumbersView: React.FC<MemorizeNumbersViewProps> = ({
         variant="outlined"
         sx={{ mt: 2 }}
       />
-
+      
       <Button variant="contained" onClick={onCheckAnswer} sx={{ mt: 3 }}>
         Check Answer
       </Button>
-
+      
       <Typography variant="h6" sx={{ mt: 4 }}>
         Score: {score}
       </Typography>

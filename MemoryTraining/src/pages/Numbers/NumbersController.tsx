@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import MemorizeNumbersModel from './NumbersModel';
 import NumberViewSetup from './NumberViewSetup';
@@ -7,62 +7,57 @@ import MemorizeNumbersView from './NumbersView';
 const theme = createTheme();
 
 const MemorizeNumbersController: React.FC = () => {
-  const [gameStarted, setGameStarted] = useState(false);
-  const [numberCount, setNumberCount] = useState(5);
-  const [timerDuration, setTimerDuration] = useState(5);
+  const [numberCount, setNumberCount] = useState(5); // Default to 5 digits
   const [userInput, setUserInput] = useState('');
-  const [score, setScore] = useState(0);
   const [numbersToMemorize, setNumbersToMemorize] = useState<number[]>([]);
+  const [score, setScore] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [model, setModel] = useState(() => new MemorizeNumbersModel());
+
+
+
   
-  const model = new MemorizeNumbersModel();
 
   const handleNumberCountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const count = Number(event.target.value);
-    setNumberCount(count);
-  };
-
-  const handleTimerDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const duration = Number(event.target.value);
-    setTimerDuration(duration);
-  };
-
-  const handleStartGame = () => {
-    model.startGame(numberCount, 2);
-    setGameStarted(true);
-    setUserInput('');
-    setScore(0);
-    setNumbersToMemorize(model.getNumbersToMemorize());
+    setNumberCount(parseInt(event.target.value, 10) || 0);
   };
 
   const handleUserInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserInput(event.target.value);
   };
 
-  const handleCheckAnswer = () => {
-    const correctCount = model.checkAnswer(userInput);
-    setScore(correctCount);
+  const handleStartGame = () => {
+    model.startGame(numberCount);
+    setNumbersToMemorize(model.getNumbersToMemorize());
+    setGameStarted(true);
+    setUserInput(''); // Clear previous input
   };
 
+  const handleCheckAnswer = () => {
+    console.log('Checking answer...');
+    const correctCount = model.checkAnswer(userInput);
+    console.log(`Score: ${correctCount} and ` + model.getScore());
+    setScore(correctCount); // Update the local component state for score
+  };
+  
+  
+
   return (
-    <ThemeProvider theme={theme}>
-      {gameStarted ? (
-        <MemorizeNumbersView
-        numberCount={numberCount}
-        timerDuration={timerDuration}
-        userInput={userInput}
-        score={score}
-        gameStarted={gameStarted}
-        numbersToMemorize={numbersToMemorize}
-        onNumberCountChange={handleNumberCountChange}
-        onTimerDurationChange={handleTimerDurationChange}
-        onUserInputChange={handleUserInputChange}
-        onCheckAnswer={handleCheckAnswer}
-        onStartGame={handleStartGame}
-        />
+    <div>
+      {!gameStarted ? (
+        <div>
+          <input type="number" value={numberCount} onChange={handleNumberCountChange} placeholder="Number of digits" />
+          <button onClick={handleStartGame}>Start Game</button>
+        </div>
       ) : (
-        <NumberViewSetup onStartGame={handleStartGame} />
+        <div>
+          <p>Memorize these numbers: {numbersToMemorize}</p>
+          <input type="text" value={userInput} onChange={handleUserInputChange} placeholder="Your answer" />
+          <button onClick={handleCheckAnswer}>Check Answer</button>
+          <p>Score: {score}</p>
+        </div>
       )}
-    </ThemeProvider>
+    </div>
   );
 };
 

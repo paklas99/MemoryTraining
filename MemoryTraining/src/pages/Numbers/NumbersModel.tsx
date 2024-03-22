@@ -1,46 +1,47 @@
-class MemorizeNumbersModel {
+export default class MemorizeNumbersModel {
     private numbersToMemorize: number[] = [];
     private score: number = 0;
-    private groupBy: number = 1;
+  
+    public startGame(numberCount: number): void {
+      // Reset the state for a new game
+      this.numbersToMemorize = [];
+      this.score = 0;
+  
+      // Generate a sequence of random digits
+      for (let i = 0; i < numberCount; i++) {
+        this.numbersToMemorize.push(Math.floor(Math.random() * 10));
+      }
 
-    public startGame(numberCount: number, groupBy: number): void {
-        this.numbersToMemorize = Array.from({ length: numberCount }, () =>
-            Math.floor(Math.random() * 10)
-        );
-        this.groupBy = groupBy;
-        this.score = 0;
     }
-
+  
     public checkAnswer(userInput: string): number {
-        const userAnswers: number[] = userInput
-            .split(',')
-            .map((str) => Number(str.trim()));
+      const userAnswers = userInput.split('').map(Number);
+  
+      // Reset score for each attempt
+      this.score = 0;
+  
+      // Increment score for each correctly memorized digit
+      userAnswers.forEach((num, index) => {
+        if (num === this.numbersToMemorize[index]) {
+          this.score += 1;
+        }
+      });
+      console.log("User Answers:", userAnswers);
+        console.log("Numbers to Memorize:", this.numbersToMemorize);
 
-        let correctCount = 0;
-        this.numbersToMemorize.forEach((num, index) => {
-            if (userAnswers[index] === num) {
-                correctCount++;
-            }
-        });
-        this.score = correctCount;
-        return correctCount;
+  
+      return this.score;
     }
-
+  
     public getNumbersToMemorize(): number[] {
-        return this.numbersToMemorize;
+      return this.numbersToMemorize;
     }
-
-    public getGroupBy(): number {
-        return this.groupBy;
-    }
-
-    public setGroupBy(groupBy: number): number {
-        return this.groupBy = groupBy;
-    }
-
+  
     public getScore(): number {
-        return this.score;
+      return this.score;
     }
-}
-
-export default MemorizeNumbersModel;
+    public setScore(newScore: number): void {
+        this.score = newScore;
+      }
+  }
+  
